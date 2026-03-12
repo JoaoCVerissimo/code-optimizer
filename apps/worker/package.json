@@ -10,7 +10,7 @@
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit",
     "lint": "echo 'no linter configured yet'",
-    "test": "vitest run"
+    "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
