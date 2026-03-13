@@ -41,13 +41,13 @@ PostgreSQL  Redis   Claude API
 
 - **Node.js** >= 20
 - **Docker** and **Docker Compose**
-- **Anthropic API key** (for Claude AI optimization)
+- **Anthropic API key** (for Claude AI optimization) — or use mock mode for development
 
 ## Quick Start (Docker)
 
 ```bash
 # Clone and configure
-git clone <repo-url> code-optimizer
+git clone https://github.com/JoaoCVerissimo/code-optimizer.git
 cd code-optimizer
 cp .env.example .env
 # Edit .env and set your ANTHROPIC_API_KEY
@@ -78,6 +78,15 @@ make dev
 ```
 
 The frontend runs on http://localhost:3000 and the API on http://localhost:4000.
+
+## Mock Mode (No API Key Required)
+
+For development and testing without an Anthropic API key, set `MOCK_AI=true` in your `.env` file. This replaces real Claude AI calls and Docker sandbox benchmarks with realistic mock data, so you can test the full UI and pipeline locally at zero cost.
+
+```bash
+# In .env
+MOCK_AI=true
+```
 
 ## Available Commands
 

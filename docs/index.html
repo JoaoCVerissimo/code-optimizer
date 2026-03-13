@@ -695,7 +695,7 @@
       <div class="quickstart">
         <h3>Quick Start (Docker)</h3>
         <pre><code><span class="comment"># Clone and configure</span>
-<span class="cmd">git clone</span> &lt;repo-url&gt; code-optimizer
+<span class="cmd">git clone</span> https://github.com/JoaoCVerissimo/code-optimizer.git
 <span class="cmd">cd</span> code-optimizer
 <span class="cmd">cp</span> .env.example .env
 <span class="comment"># Edit .env and set your ANTHROPIC_API_KEY</span>
@@ -725,6 +725,16 @@
 
 <span class="comment"># Frontend: <span class="url">http://localhost:3000</span></span>
 <span class="comment"># API:      <span class="url">http://localhost:4000</span></span></code></pre>
+      </div>
+
+      <div class="quickstart" style="margin-top: 20px;">
+        <h3>Mock Mode (No API Key Required)</h3>
+        <pre><code><span class="comment"># Set MOCK_AI=true in your .env to bypass real Claude API calls</span>
+<span class="comment"># and Docker sandbox execution. Uses realistic mock data instead.</span>
+<span class="comment"># Great for UI development and testing the full pipeline at zero cost.</span>
+
+<span class="cmd">echo</span> "MOCK_AI=true" >> .env
+<span class="cmd">make</span> dev</code></pre>
       </div>
 
       <div style="margin-top: 32px;">

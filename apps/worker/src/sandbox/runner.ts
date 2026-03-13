@@ -10,6 +10,7 @@ import {
   SANDBOX_TIMEOUT_MS,
 } from "@code-optimizer/shared";
 import { LANGUAGE_FILENAMES } from "@code-optimizer/shared";
+import { getConfig } from "../config.js";
 
 const docker = new Docker();
 
@@ -30,11 +31,29 @@ const RUN_COMMANDS: Record<SupportedLanguage, string[]> = {
   go: ["go", "run", "/harness/run.go"],
 };
 
+async function mockBenchmark(): Promise<BenchmarkMetrics> {
+  await new Promise((r) => setTimeout(r, 200)); // simulate execution time
+  const baseTime = 50 + Math.random() * 150;
+  return {
+    executionTimeMs: Math.round(baseTime * 100) / 100,
+    cpuTimeMs: Math.round(baseTime * 0.8 * 100) / 100,
+    peakMemoryBytes: Math.round(2_000_000 + Math.random() * 8_000_000),
+    exitCode: 0,
+    stdout: "Mock execution completed successfully\n",
+    stderr: "",
+    timedOut: false,
+  };
+}
+
 export async function runBenchmark(
   code: string,
   language: SupportedLanguage,
   timeoutMs: number = SANDBOX_TIMEOUT_MS,
 ): Promise<BenchmarkMetrics> {
+  if (getConfig().mockMode) {
+    return mockBenchmark();
+  }
+
   const tmpDir = await mkdtemp(join(tmpdir(), "optimizer-sandbox-"));
   const codeDir = join(tmpDir, "code");
   const resultsDir = join(tmpDir, "results");

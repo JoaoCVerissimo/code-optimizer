@@ -33,10 +33,56 @@ export interface ReadabilityScoreResult {
   reasoning: string;
 }
 
+function generateMockOptimization(userPrompt: string): OptimizationResult {
+  // Extract the code from the prompt
+  const codeMatch = userPrompt.match(/```\w+\n([\s\S]*?)```/);
+  const originalCode = codeMatch?.[1]?.trim() ?? "// original code";
+
+  return {
+    variants: [
+      {
+        label: "Algorithmic Optimization",
+        code: `// Optimized: algorithmic improvement\n${originalCode}\n// Added: early termination and reduced iterations`,
+        explanation:
+          "Applied algorithmic optimization by reducing unnecessary iterations and adding early termination conditions for better average-case performance.",
+      },
+      {
+        label: "Caching & Memoization",
+        code: `// Optimized: caching layer\nconst _cache = new Map();\n${originalCode}\n// Added: result caching for repeated inputs`,
+        explanation:
+          "Added a caching layer using a Map to memoize results of expensive computations, avoiding redundant calculations on repeated inputs.",
+      },
+      {
+        label: "Data Structure Optimization",
+        code: `// Optimized: efficient data structures\n${originalCode}\n// Refactored: using Set/Map for O(1) lookups`,
+        explanation:
+          "Replaced linear search patterns with Set and Map data structures to achieve O(1) lookup times instead of O(n), significantly improving performance for large inputs.",
+      },
+    ],
+  };
+}
+
 export async function callClaude<T>(
   systemPrompt: string,
   userPrompt: string,
 ): Promise<T> {
+  const config = getConfig();
+
+  if (config.mockMode) {
+    // Return mock data based on the system prompt
+    await new Promise((r) => setTimeout(r, 500)); // simulate latency
+    if (systemPrompt.includes("code optimizer")) {
+      return generateMockOptimization(userPrompt) as T;
+    }
+    if (systemPrompt.includes("security auditor")) {
+      return { findings: [] } as T;
+    }
+    if (systemPrompt.includes("code quality")) {
+      return { score: 72, reasoning: "Good structure with room for improvement in naming conventions." } as T;
+    }
+    return {} as T;
+  }
+
   const client = getAnthropicClient();
 
   const response = await client.messages.create({

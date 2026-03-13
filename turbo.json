@@ -16,7 +16,8 @@
         "HOST",
         "NEXT_PUBLIC_API_URL",
         "SANDBOX_TIMEOUT_MS",
-        "BENCHMARK_RUNS"
+        "BENCHMARK_RUNS",
+        "MOCK_AI"
       ]
     },
     "test": {
